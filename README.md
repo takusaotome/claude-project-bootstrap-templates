@@ -32,12 +32,13 @@
 - `docs/PROJECT_KICKOFF_CHECKLIST.template.md`
 - `FEATURE_BRIEF.template.md`
 - `.claude/rules/*.template.md`
-- `.claude/commands/project-kickoff.md.template.md`
+- `.claude/skills/project-kickoff/SKILL.md.template`
+- `.claude/commands/project-kickoff.md.template.md`（互換用）
 
 ## 構成方針
 
 - `docs/` はプロジェクトの一次情報を置く場所です。
-- `.claude/` は Claude Code の実行時ルール、commands、将来の skills を置く場所です。
+- `.claude/` は Claude Code の実行時ルール、skills、commands を置く場所です。
 - `docs/PROJECT_BRIEF.md` がプロジェクト文脈の正本です。`.claude/project-context.md` 系の旧テンプレートは廃止しました。
 - `docs/QUALITY_GATES.md` と `docs/TEST_STRATEGY.md` を、完了判定と検証証跡の正本にします。
 
@@ -52,6 +53,9 @@
 │   │   ├── backend-api.md
 │   │   ├── db-and-migrations.md
 │   │   └── testing-and-release.md
+│   ├── skills/
+│   │   └── project-kickoff/
+│   │       └── SKILL.md
 │   └── commands/
 │       └── project-kickoff.md
 └── docs/
@@ -89,7 +93,7 @@
 
 ### 6. 初期化コマンドを置く
 
-`/project-kickoff` を導入すると、新規リポジトリや既存リポジトリへの後付け導入が楽になります。
+`project-kickoff` skill を導入すると、新規リポジトリや既存リポジトリへの後付け導入が楽になります。command 版は互換用として残します。
 
 ## このパックで想定するスキル群
 
@@ -168,6 +172,8 @@ all-in-one ファイルを更新する場合は次を実行します。
 ```bash
 python3 scripts/validate_templates.py --write-bundle
 ```
+
+CI では `.github/workflows/validate.yml` が同じ検証と bundle 冪等性確認を実行します。
 
 ## 導入時の注意
 

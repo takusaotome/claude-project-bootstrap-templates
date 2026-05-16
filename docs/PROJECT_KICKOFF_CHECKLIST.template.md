@@ -16,7 +16,8 @@
 - [ ] `docs/QUALITY_GATES.md` を作成した
 - [ ] `docs/TEST_STRATEGY.md` を作成した
 - [ ] `.claude/rules/` を必要に応じて配置した
-- [ ] `/project-kickoff` コマンドを配置した
+- [ ] `.claude/skills/project-kickoff/SKILL.md` を配置した
+- [ ] 必要なら互換用の `/project-kickoff` コマンドを配置した
 
 ### C. Execution Readiness
 - [ ] build/test/lint/typecheck コマンドを埋めた

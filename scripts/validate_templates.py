@@ -45,7 +45,9 @@ BUNDLE_FILES = [
     ".claude/rules/backend-api.md.template.md",
     ".claude/rules/db-and-migrations.md.template.md",
     ".claude/rules/testing-and-release.md.template.md",
+    ".claude/skills/project-kickoff/SKILL.md.template",
     ".claude/commands/project-kickoff.md.template.md",
+    ".github/workflows/validate.yml",
     "placeholders.yml",
 ]
 

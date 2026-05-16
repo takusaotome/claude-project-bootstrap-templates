@@ -1,0 +1,106 @@
+PROJECT_ROOT:
+  required: false
+  example: "/path/to/your-project"
+  description: "Target project root used in directory examples."
+PROJECT_NAME:
+  required: true
+  example: "billing-service"
+  description: "Project name."
+PROJECT_SUMMARY:
+  required: true
+  example: "Subscription billing backend"
+  description: "One-line project summary."
+OWNER_OR_TEAM:
+  required: true
+  example: "Platform Team"
+  description: "Primary owner or team."
+CURRENT_PHASE:
+  required: true
+  example: "discovery"
+  description: "Current project phase."
+  enum:
+    - "discovery"
+    - "design"
+    - "implementation"
+    - "verification"
+    - "release"
+REPOSITORY_URL:
+  required: false
+  example: "https://github.com/example/billing-service"
+  description: "Repository URL."
+PRIMARY_LANGUAGE:
+  required: true
+  example: "Python"
+  description: "Primary implementation language."
+STACK:
+  required: true
+  example: "FastAPI, PostgreSQL, Docker"
+  description: "Main application stack."
+MAIN_SOURCE_DIR:
+  required: true
+  example: "src"
+  description: "Main source directory."
+TEST_DIR:
+  required: true
+  example: "tests"
+  description: "Test directory."
+DB_DIR:
+  required: false
+  example: "migrations"
+  description: "Database schema or migration directory."
+INFRA_DIR:
+  required: false
+  example: "infra"
+  description: "Infrastructure or deployment configuration directory."
+INSTALL_COMMAND:
+  required: false
+  example: "npm install"
+  description: "Dependency installation command."
+BUILD_COMMAND:
+  required: false
+  example: "npm run build"
+  description: "Build command."
+TEST_COMMAND:
+  required: false
+  example: "npm test"
+  description: "Default test command."
+UNIT_TEST_COMMAND:
+  required: false
+  example: "pytest tests/unit"
+  description: "Unit test command."
+INTEGRATION_TEST_COMMAND:
+  required: false
+  example: "pytest tests/integration"
+  description: "Integration test command."
+E2E_OR_SMOKE_COMMAND:
+  required: false
+  example: "npm run test:e2e"
+  description: "E2E or smoke test command."
+PROD_PARITY_COMMAND:
+  required: false
+  example: "docker compose run --rm app pytest tests/smoke"
+  description: "Production-parity verification command."
+LINT_COMMAND:
+  required: false
+  example: "npm run lint"
+  description: "Lint command."
+TYPECHECK_COMMAND:
+  required: false
+  example: "npm run typecheck"
+  description: "Typecheck command."
+CI_COMMAND:
+  required: false
+  example: "npm run ci"
+  description: "CI-equivalent local command."
+PACKAGE_OR_DEPLOY_COMMAND:
+  required: false
+  example: "docker build ."
+  description: "Packaging or deploy verification command."
+YYYY-MM-DD:
+  required: false
+  example: "2026-03-21"
+  description: "Date token used by decision-log entry headings."
+TITLE:
+  required: false
+  example: "Adopt production parity smoke gate"
+  description: "Decision-log entry title token."

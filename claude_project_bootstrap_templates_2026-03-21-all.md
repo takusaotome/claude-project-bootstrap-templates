@@ -99,7 +99,7 @@ generated: 2026-03-21
 
 `.claude/rules/` で、API・DB・テスト周りなどにパス依存ルールを置きます。
 
-### 6. 初期化コマンドを置く
+### 6. 初期化 skill を置く
 
 `project-kickoff` skill を導入すると、新規リポジトリや既存リポジトリへの後付け導入が楽になります。command 版は互換用として残します。
 
@@ -1173,7 +1173,7 @@ name: project-kickoff
 description: Bootstrap project context, quality gates, skill routing, and test strategy for a new or existing repository. Use only when the user explicitly asks to run project kickoff or bootstrap project context.
 argument-hint: "[optional-focus]"
 disable-model-invocation: true
-allowed-tools: Read Write Edit Grep Glob LS TodoWrite TaskCreate TaskUpdate TaskList TaskGet AskUserQuestion
+allowed-tools: Read Grep Glob LS AskUserQuestion TaskCreate TaskUpdate TaskList TaskGet Edit(CLAUDE.md) Edit(docs/**) Edit(.claude/rules/**)
 ---
 
 # Project Kickoff
@@ -1184,7 +1184,7 @@ $ARGUMENTS
 
 ## Tool Permission Note
 
-This skill allows `Write` and `Edit` because project kickoff creates or refreshes bootstrap documents. It should be invoked explicitly by the user, not automatically.
+This skill pre-approves edits only for `CLAUDE.md`, `docs/**`, and `.claude/rules/**` because project kickoff refreshes bootstrap documents. Creating files or editing other paths should still require normal user approval.
 
 ## Goals
 

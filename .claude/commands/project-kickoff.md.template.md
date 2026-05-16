@@ -1,7 +1,7 @@
 ---
 description: Bootstrap Claude project context and quality controls for a new or existing repository. Create or refresh PROJECT_BRIEF, SKILL_ROUTING, QUALITY_GATES, and TEST_STRATEGY from repository evidence and user answers.
 argument-hint: [optional-focus]
-allowed-tools: Read Write Edit Grep Glob LS TodoWrite TaskCreate TaskUpdate TaskList TaskGet AskUserQuestion
+allowed-tools: Read Write Edit Grep Glob TodoWrite TaskCreate TaskUpdate TaskList TaskGet AskUserQuestion
 ---
 
 # Project Kickoff Bootstrap

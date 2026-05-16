@@ -1173,7 +1173,7 @@ name: project-kickoff
 description: Bootstrap project context, quality gates, skill routing, and test strategy for a new or existing repository. Use only when the user explicitly asks to run project kickoff or bootstrap project context.
 argument-hint: "[optional-focus]"
 disable-model-invocation: true
-allowed-tools: Read Write Edit Grep Glob LS AskUserQuestion TaskCreate TaskUpdate TaskList TaskGet
+allowed-tools: Read Write Edit Grep Glob AskUserQuestion TaskCreate TaskUpdate TaskList TaskGet
 ---
 
 # Project Kickoff
@@ -1280,7 +1280,7 @@ AskUserQuestion を使って、足りない情報だけを 2〜4 問ずつ聞く
 ---
 description: Bootstrap Claude project context and quality controls for a new or existing repository. Create or refresh PROJECT_BRIEF, SKILL_ROUTING, QUALITY_GATES, and TEST_STRATEGY from repository evidence and user answers.
 argument-hint: [optional-focus]
-allowed-tools: Read Write Edit Grep Glob LS TodoWrite TaskCreate TaskUpdate TaskList TaskGet AskUserQuestion
+allowed-tools: Read Write Edit Grep Glob TodoWrite TaskCreate TaskUpdate TaskList TaskGet AskUserQuestion
 ---
 
 # Project Kickoff Bootstrap

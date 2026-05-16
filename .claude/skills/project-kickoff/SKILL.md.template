@@ -3,7 +3,7 @@ name: project-kickoff
 description: Bootstrap project context, quality gates, skill routing, and test strategy for a new or existing repository. Use only when the user explicitly asks to run project kickoff or bootstrap project context.
 argument-hint: "[optional-focus]"
 disable-model-invocation: true
-allowed-tools: Read Write Edit Grep Glob LS AskUserQuestion TaskCreate TaskUpdate TaskList TaskGet
+allowed-tools: Read Write Edit Grep Glob AskUserQuestion TaskCreate TaskUpdate TaskList TaskGet
 ---
 
 # Project Kickoff

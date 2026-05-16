@@ -1,7 +1,7 @@
 ---
 description: Bootstrap Claude project context and quality controls for a new or existing repository. Create or refresh PROJECT_BRIEF, SKILL_ROUTING, QUALITY_GATES, and TEST_STRATEGY from repository evidence and user answers.
 argument-hint: [optional-focus]
-allowed-tools: Read,Write,Edit,Grep,Glob,LS,TodoRead,TodoWrite,AskUserQuestion
+allowed-tools: Read Write Edit Grep Glob LS TodoWrite TaskCreate TaskUpdate TaskList TaskGet AskUserQuestion
 ---
 
 # Project Kickoff Bootstrap
@@ -55,6 +55,7 @@ AskUserQuestion を使って、足りない情報だけを 2〜4 問ずつ聞く
 - `docs/DECISION_LOG.md`
 - `docs/HIDDEN_CONTRACT_REGISTER.md`
 - `docs/CROSS_MODULE_CONSISTENCY_MATRIX.md`
+- `docs/PROJECT_KICKOFF_CHECKLIST.md`
 
 ### Phase 5: Report Result
 最後に次をまとめる。

@@ -1,4 +1,8 @@
 ---
+generated: 2026-03-21
+---
+
+---
 
 # FILE: README.md
 
@@ -30,17 +34,27 @@
 
 余裕があれば次も入れると運用がかなり安定します。
 
+- `docs/DECISION_LOG.template.md`
 - `docs/HIDDEN_CONTRACT_REGISTER.template.md`
 - `docs/CROSS_MODULE_CONSISTENCY_MATRIX.template.md`
-- `docs/DECISION_LOG.template.md`
+- `docs/PROJECT_KICKOFF_CHECKLIST.template.md`
+- `FEATURE_BRIEF.template.md`
 - `.claude/rules/*.template.md`
 - `.claude/commands/project-kickoff.md.template.md`
+
+## 構成方針
+
+- `docs/` はプロジェクトの一次情報を置く場所です。
+- `.claude/` は Claude Code の実行時ルール、commands、将来の skills を置く場所です。
+- `docs/PROJECT_BRIEF.md` がプロジェクト文脈の正本です。`.claude/project-context.md` 系の旧テンプレートは廃止しました。
+- `docs/QUALITY_GATES.md` と `docs/TEST_STRATEGY.md` を、完了判定と検証証跡の正本にします。
 
 ## 推奨ディレクトリ構成
 
 ```text
 {{PROJECT_ROOT}}/
 ├── CLAUDE.md
+├── FEATURE_BRIEF.md
 ├── .claude/
 │   ├── rules/
 │   │   ├── backend-api.md
@@ -55,7 +69,8 @@
     ├── TEST_STRATEGY.md
     ├── DECISION_LOG.md
     ├── HIDDEN_CONTRACT_REGISTER.md
-    └── CROSS_MODULE_CONSISTENCY_MATRIX.md
+    ├── CROSS_MODULE_CONSISTENCY_MATRIX.md
+    └── PROJECT_KICKOFF_CHECKLIST.md
 ```
 
 ## 導入手順
@@ -108,30 +123,63 @@
 
 - `CLAUDE.md` は短く保ち、重い内容は `docs/` に分ける
 - ルールはできるだけ `.claude/rules/` に分割する
-- 重要な判断は `DECISION_LOG.md` に残す
-- 既存コード再利用時の思い込みは `HIDDEN_CONTRACT_REGISTER.md` で潰す
+- 重要な判断は `docs/DECISION_LOG.md` に残す
+- 既存コード再利用時の思い込みは `docs/HIDDEN_CONTRACT_REGISTER.md` で潰す
 - 完了判定は「コードを書いた」ではなく「必要証跡が揃った」で判断する
 
 ## 置換対象プレースホルダ
 
+- 正本は `placeholders.yml` です。
+- 追加・削除した場合は `python3 scripts/validate_templates.py` で README とテンプレートの整合を確認してください。
+
+- `{{PROJECT_ROOT}}`
 - `{{PROJECT_NAME}}`
 - `{{PROJECT_SUMMARY}}`
+- `{{OWNER_OR_TEAM}}`
+- `{{CURRENT_PHASE}}`
+- `{{REPOSITORY_URL}}`
 - `{{PRIMARY_LANGUAGE}}`
 - `{{STACK}}`
+- `{{MAIN_SOURCE_DIR}}`
+- `{{TEST_DIR}}`
+- `{{DB_DIR}}`
+- `{{INFRA_DIR}}`
+- `{{INSTALL_COMMAND}}`
 - `{{BUILD_COMMAND}}`
 - `{{TEST_COMMAND}}`
+- `{{UNIT_TEST_COMMAND}}`
+- `{{INTEGRATION_TEST_COMMAND}}`
+- `{{E2E_OR_SMOKE_COMMAND}}`
+- `{{PROD_PARITY_COMMAND}}`
 - `{{LINT_COMMAND}}`
 - `{{TYPECHECK_COMMAND}}`
 - `{{CI_COMMAND}}`
 - `{{PACKAGE_OR_DEPLOY_COMMAND}}`
-- `{{MAIN_SOURCE_DIR}}`
-- `{{TEST_DIR}}`
-- `{{DB_DIR}}`
-- `{{OWNER_OR_TEAM}}`
+- `{{YYYY-MM-DD}}`
+- `{{TITLE}}`
+
+## テンプレート検証
+
+```bash
+python3 scripts/validate_templates.py
+```
+
+この検証では次を確認します。
+
+- テンプレート内の `{{...}}` がすべて `placeholders.yml` に登録されている
+- README のプレースホルダー一覧が `placeholders.yml` と一致している
+- required な placeholder に example と description がある
+- `claude_project_bootstrap_templates_2026-03-21-all.md` が個別テンプレートから再生成できる
+
+all-in-one ファイルを更新する場合は次を実行します。
+
+```bash
+python3 scripts/validate_templates.py --write-bundle
+```
 
 ## 導入時の注意
 
-テンプレートは最初から全部埋める必要はありません。  
+テンプレートは最初から全部埋める必要はありません。
 ただし、次の4つだけは空欄にしないほうがよいです。
 
 - 目的 / スコープ
@@ -139,6 +187,143 @@
 - 高リスク領域
 - 完了判定
 
+---
+
+# FILE: 00-bootstrap-guide.md
+
+# Claude Project Bootstrap Templates
+
+作成日: 2026-03-21
+
+## 1. 目的
+
+このテンプレートパックは、新しいプロジェクトを始めるときに、AI エージェントが最初から次を理解できる状態を素早く作るためのものです。
+
+- このプロジェクトは何を作るのか
+- 何が品質ゲートなのか
+- どのフェーズでどのスキルを使うのか
+- どの文書を事実の一次情報として扱うのか
+- 設計判断がどこに残っているのか
+
+狙いは、セッションごとに同じ説明をやり直さなくてよい状態を作ることです。
+
+## 2. 推奨構成
+
+```text
+your-project/
+├── CLAUDE.md
+├── FEATURE_BRIEF.md
+├── .claude/
+│   ├── rules/
+│   │   ├── backend-api.md
+│   │   ├── db-and-migrations.md
+│   │   └── testing-and-release.md
+│   └── commands/
+│       └── project-kickoff.md
+└── docs/
+    ├── PROJECT_BRIEF.md
+    ├── SKILL_ROUTING.md
+    ├── QUALITY_GATES.md
+    ├── TEST_STRATEGY.md
+    ├── DECISION_LOG.md
+    ├── HIDDEN_CONTRACT_REGISTER.md
+    ├── CROSS_MODULE_CONSISTENCY_MATRIX.md
+    └── PROJECT_KICKOFF_CHECKLIST.md
+```
+
+`docs/` はプロジェクトの一次情報、`.claude/` は Claude Code の実行時ルールやコマンドを置く場所です。
+
+## 3. 最低限入れるべきもの
+
+### 必須
+1. `CLAUDE.md`
+2. `docs/PROJECT_BRIEF.md`
+3. `docs/SKILL_ROUTING.md`
+4. `docs/QUALITY_GATES.md`
+5. `docs/TEST_STRATEGY.md`
+
+### 強く推奨
+6. `docs/DECISION_LOG.md`
+7. `docs/PROJECT_KICKOFF_CHECKLIST.md`
+8. `FEATURE_BRIEF.md`
+
+### オプション
+9. `.claude/rules/testing-and-release.md`
+10. `.claude/rules/backend-api.md`
+11. `.claude/rules/db-and-migrations.md`
+
+## 4. なぜこの分け方にするか
+
+### `CLAUDE.md`
+最上位のオーケストレーターです。
+「最初に何を読むか」「どの資料を優先するか」「進捗をどう表現するか」を短く固定します。
+
+### `docs/PROJECT_BRIEF.md`
+プロジェクトの背景、スコープ、制約、アーキテクチャ、主要な業務ルールをまとめます。
+
+### `docs/SKILL_ROUTING.md`
+スキルの発火条件と成果物を定義します。
+ここがないと、スキルが存在していても、いつ使うかが人依存になります。
+
+### `docs/QUALITY_GATES.md`
+「実装完了」「検証完了」「出荷可能」を分けます。
+スキルを使っても、どこで止まるべきかが曖昧だと再発防止になりません。
+
+### `docs/TEST_STRATEGY.md`
+unit / integration / e2e / production parity の責務を分け、検証盲点を減らします。
+
+### `docs/DECISION_LOG.md`
+設計判断の蓄積です。
+後からセッションが変わっても、なぜそうしたのかを辿れるようにします。
+
+### `FEATURE_BRIEF.md`
+新しい機能や改修を始めるたびに、対象範囲・受け入れ条件・リスク・使うスキルを整理します。
+
+## 5. 推奨導入手順
+
+### 15〜30分で最低限導入する流れ
+1. `CLAUDE.md` を配置する
+2. `docs/PROJECT_BRIEF.md` を埋める
+3. `docs/SKILL_ROUTING.md` に利用可能スキルを記入する
+4. `docs/QUALITY_GATES.md` に完了判定を埋める
+5. `docs/TEST_STRATEGY.md` に標準検証コマンドと parity 観点を埋める
+6. 最低 1 件の設計判断を `docs/DECISION_LOG.md` に記録する
+7. `docs/PROJECT_KICKOFF_CHECKLIST.md` を使って不足を洗う
+8. 最初の主要機能は `FEATURE_BRIEF.md` から始める
+
+## 6. 運用のコツ
+
+- `CLAUDE.md` は短く保つ
+- 詳細ルールは `.claude/rules/` に寄せる
+- 大きな仕様変更をしたら `docs/PROJECT_BRIEF.md` と `docs/DECISION_LOG.md` を更新する
+- フェーズが変わったら `docs/QUALITY_GATES.md` の該当ゲートを更新する
+- 新スキルを導入したら `docs/SKILL_ROUTING.md` の trigger / output / owner を更新する
+- プレースホルダーを増減したら `placeholders.yml` と README を更新し、`python3 scripts/validate_templates.py` を実行する
+
+## 7. このパックに含まれるファイル
+
+- `CLAUDE.md.template.md`
+- `docs/PROJECT_BRIEF.template.md`
+- `docs/SKILL_ROUTING.template.md`
+- `docs/QUALITY_GATES.template.md`
+- `docs/TEST_STRATEGY.template.md`
+- `docs/DECISION_LOG.template.md`
+- `docs/HIDDEN_CONTRACT_REGISTER.template.md`
+- `docs/CROSS_MODULE_CONSISTENCY_MATRIX.template.md`
+- `docs/PROJECT_KICKOFF_CHECKLIST.template.md`
+- `FEATURE_BRIEF.template.md`
+- `.claude/rules/backend-api.md.template.md`
+- `.claude/rules/db-and-migrations.md.template.md`
+- `.claude/rules/testing-and-release.md.template.md`
+- `.claude/commands/project-kickoff.md.template.md`
+- `placeholders.yml`
+- `scripts/validate_templates.py`
+
+## 8. 導入後の最初のプロンプト例
+
+```text
+このリポジトリでは、まず CLAUDE.md に従って起動し、必要なら docs/PROJECT_BRIEF.md、docs/SKILL_ROUTING.md、docs/QUALITY_GATES.md、docs/TEST_STRATEGY.md、docs/DECISION_LOG.md を読んでから、現状のフェーズと次に使うべきスキルを提案してください。
+```
 
 ---
 
@@ -218,9 +403,110 @@
 
 ## Template Maintenance Rule
 
-この `CLAUDE.md` は短く保つ。  
+この `CLAUDE.md` は短く保つ。
 長くなった場合は `docs/` か `.claude/rules/` に分割し、ここには参照関係と最重要ルールだけを残す。
 
+---
+
+# FILE: FEATURE_BRIEF.template.md
+
+# Feature / Change Brief
+
+## 1. Basic Information
+
+- Title:
+- Type: New feature / Change / Bug fix / Refactor / Migration
+- Owner:
+- Requested by:
+- Target milestone:
+
+## 2. Goal
+
+- 何を達成したいか:
+- なぜ必要か:
+- 成功条件:
+
+## 3. Scope
+
+### In scope
+-
+-
+-
+
+### Out of scope
+-
+-
+-
+
+## 4. Acceptance Criteria
+
+- [ ]
+- [ ]
+- [ ]
+
+## 5. Impacted Areas
+
+| Module / path | Type of change | Risk level | Notes |
+|---|---|---|---|
+|  |  |  |  |
+
+## 6. Risk Questions
+
+### Hidden contract risk
+- 既存関数 / API / schema / shared library の暗黙仕様確認が必要か:
+- 必要なら使うスキル: `hidden-contract-investigator`
+
+### Safe-by-default risk
+- 認可 / 生 SQL / ファイル I/O / 日時 / 状態遷移 / 外部連携を含むか:
+- 必要なら使うスキル: `safe-by-default-architect`
+
+### Cross-module risk
+- 複数モジュール / 複数フローにまたがるか:
+- 必要なら使うスキル: `cross-module-consistency-auditor`
+
+### Production parity risk
+- DB 方言差 / 実依存関係 / packaging / timezone 差があるか:
+- 必要なら使うスキル: `production-parity-test-designer`
+
+### Review risk
+- 重要変更または終盤変更か:
+- 必要なら使うスキル: `design-implementation-reviewer`, `critical-code-reviewer`
+
+## 7. Planned Skill Stack
+
+| Priority | Skill | Why |
+|---|---|---|
+| 1 |  |  |
+| 2 |  |  |
+| 3 |  |  |
+
+## 8. Required Outputs
+
+- [ ] 設計メモ
+- [ ] Hidden contract 調査結果
+- [ ] Impact map
+- [ ] Test plan / parity plan
+- [ ] Review summary
+
+## 9. Verification Plan
+
+- Unit:
+- Integration:
+- E2E:
+- Smoke / parity:
+- Manual verification:
+
+## 10. Gate Alignment
+
+- Current gate:
+- Gate exit criteria this work affects:
+- Evidence to update:
+
+## 11. Open Questions / Assumptions
+
+-
+-
+-
 
 ---
 
@@ -248,14 +534,14 @@
 ## 3. Scope
 
 ### In Scope
-- 
-- 
-- 
+-
+-
+-
 
 ### Out of Scope
-- 
-- 
-- 
+-
+-
+-
 
 ## 4. Key Stakeholders
 
@@ -277,9 +563,9 @@
 - External services:
 
 ### High-Level Flow
-1. 
-2. 
-3. 
+1.
+2.
+3.
 
 ## 6. Repository Map
 
@@ -338,9 +624,9 @@
 
 ## 11. Open Questions
 
-- 
-- 
-- 
+-
+-
+-
 
 ## 12. References
 
@@ -349,7 +635,6 @@
 - API docs:
 - Ops runbook:
 - Product spec:
-
 
 ---
 
@@ -436,7 +721,6 @@
 - DBスキーマ変更、クエリ変更、マイグレーション
 - 外部 API、メッセージング、ジョブ、ファイル保存
 - 同一仕様が複数箇所に散っている変更
-
 
 ---
 
@@ -556,7 +840,6 @@
 - Timestamp:
 ```
 
-
 ---
 
 # FILE: docs/TEST_STRATEGY.template.md
@@ -608,16 +891,16 @@
 ## 6. Mandatory Test Scenarios
 
 ### Happy Path
-- 
-- 
+-
+-
 
 ### Error Path
-- 
-- 
+-
+-
 
 ### Boundary / Edge Cases
-- 
-- 
+-
+-
 
 ### Data Integrity
 - 保存、更新、削除、再実行、冪等性
@@ -664,7 +947,6 @@
 |  |  |  |  |
 |  |  |  |  |
 
-
 ---
 
 # FILE: docs/DECISION_LOG.template.md
@@ -687,9 +969,9 @@
 - 影響範囲:
 
 ### Options Considered
-1. 
-2. 
-3. 
+1.
+2.
+3.
 
 ### Decision
 - 採用案:
@@ -708,7 +990,6 @@
 - Decision owner:
 - Reviewers:
 - Date:
-
 
 ---
 
@@ -737,7 +1018,6 @@
 - [ ] mock と実実装の差を確認した
 - [ ] 環境差分の影響を確認した
 
-
 ---
 
 # FILE: docs/CROSS_MODULE_CONSISTENCY_MATRIX.template.md
@@ -765,7 +1045,6 @@
 - [ ] テスト対象を全フローにひも付けた
 - [ ] レビュー対象者に影響範囲を共有した
 
-
 ---
 
 # FILE: docs/PROJECT_KICKOFF_CHECKLIST.template.md
@@ -783,10 +1062,10 @@
 
 ### B. AI Context
 - [ ] `CLAUDE.md` を配置した
-- [ ] `PROJECT_BRIEF.md` を作成した
-- [ ] `SKILL_ROUTING.md` を作成した
-- [ ] `QUALITY_GATES.md` を作成した
-- [ ] `TEST_STRATEGY.md` を作成した
+- [ ] `docs/PROJECT_BRIEF.md` を作成した
+- [ ] `docs/SKILL_ROUTING.md` を作成した
+- [ ] `docs/QUALITY_GATES.md` を作成した
+- [ ] `docs/TEST_STRATEGY.md` を作成した
 - [ ] `.claude/rules/` を必要に応じて配置した
 - [ ] `/project-kickoff` コマンドを配置した
 
@@ -795,13 +1074,14 @@
 - [ ] main source / test / db ディレクトリを明記した
 - [ ] リリース判定者を決めた
 - [ ] 例外運用のルールを決めた
+- [ ] `placeholders.yml` に必要な placeholder が登録されている
+- [ ] `python3 scripts/validate_templates.py` が通る
 
 ### D. Risk Controls
 - [ ] 隠れ契約を記録する場所を決めた
 - [ ] モジュール横断整合性を記録する場所を決めた
 - [ ] production parity の最低ラインを決めた
 - [ ] 重大欠陥のエスカレーション先を決めた
-
 
 ---
 
@@ -825,7 +1105,6 @@ paths:
 - 入力バリデーション、認可判定、エラー処理、監査可能性を考慮する。
 - 高リスク変更では integration test 以上を必須候補とする。
 
-
 ---
 
 # FILE: .claude/rules/db-and-migrations.md.template.md
@@ -847,7 +1126,6 @@ paths:
 - schema change が 2 モジュール以上に影響する場合は `cross-module-consistency-auditor` 相当の確認を行う。
 - forward だけでなく rollback、再実行、データ整合性も確認対象に含める。
 - 生SQLを使う場合は、パラメータ化、方言依存、インデックス影響、NULL/集計挙動を明示する。
-
 
 ---
 
@@ -872,7 +1150,6 @@ paths:
 - packaging / container build / runtime dependency がある場合は、本番同等確認を検討する。
 - リリース判定では、通ったテストだけでなく未実施テストと残リスクも明示する。
 
-
 ---
 
 # FILE: .claude/commands/project-kickoff.md.template.md
@@ -880,7 +1157,7 @@ paths:
 ---
 description: Bootstrap Claude project context and quality controls for a new or existing repository. Create or refresh PROJECT_BRIEF, SKILL_ROUTING, QUALITY_GATES, and TEST_STRATEGY from repository evidence and user answers.
 argument-hint: [optional-focus]
-allowed-tools: Read,Write,Edit,Grep,Glob,LS,TodoRead,TodoWrite,AskUserQuestion
+allowed-tools: Read Write Edit Grep Glob LS TodoWrite TaskCreate TaskUpdate TaskList TaskGet AskUserQuestion
 ---
 
 # Project Kickoff Bootstrap
@@ -934,6 +1211,7 @@ AskUserQuestion を使って、足りない情報だけを 2〜4 問ずつ聞く
 - `docs/DECISION_LOG.md`
 - `docs/HIDDEN_CONTRACT_REGISTER.md`
 - `docs/CROSS_MODULE_CONSISTENCY_MATRIX.md`
+- `docs/PROJECT_KICKOFF_CHECKLIST.md`
 
 ### Phase 5: Report Result
 最後に次をまとめる。
@@ -953,3 +1231,114 @@ AskUserQuestion を使って、足りない情報だけを 2〜4 問ずつ聞く
 - 不明な項目は `TBD` として残し、未確認で確定文にしない
 - コマンドは実際の repo evidence があるものを優先し、なければ候補として示す
 - 技術的高リスク領域がある場合はスキルルーティングに必ず反映する
+
+---
+
+# FILE: placeholders.yml
+
+PROJECT_ROOT:
+  required: false
+  example: "/path/to/your-project"
+  description: "Target project root used in directory examples."
+PROJECT_NAME:
+  required: true
+  example: "billing-service"
+  description: "Project name."
+PROJECT_SUMMARY:
+  required: true
+  example: "Subscription billing backend"
+  description: "One-line project summary."
+OWNER_OR_TEAM:
+  required: true
+  example: "Platform Team"
+  description: "Primary owner or team."
+CURRENT_PHASE:
+  required: true
+  example: "discovery"
+  description: "Current project phase."
+  enum:
+    - "discovery"
+    - "design"
+    - "implementation"
+    - "verification"
+    - "release"
+REPOSITORY_URL:
+  required: false
+  example: "https://github.com/example/billing-service"
+  description: "Repository URL."
+PRIMARY_LANGUAGE:
+  required: true
+  example: "Python"
+  description: "Primary implementation language."
+STACK:
+  required: true
+  example: "FastAPI, PostgreSQL, Docker"
+  description: "Main application stack."
+MAIN_SOURCE_DIR:
+  required: true
+  example: "src"
+  description: "Main source directory."
+TEST_DIR:
+  required: true
+  example: "tests"
+  description: "Test directory."
+DB_DIR:
+  required: false
+  example: "migrations"
+  description: "Database schema or migration directory."
+INFRA_DIR:
+  required: false
+  example: "infra"
+  description: "Infrastructure or deployment configuration directory."
+INSTALL_COMMAND:
+  required: false
+  example: "npm install"
+  description: "Dependency installation command."
+BUILD_COMMAND:
+  required: false
+  example: "npm run build"
+  description: "Build command."
+TEST_COMMAND:
+  required: false
+  example: "npm test"
+  description: "Default test command."
+UNIT_TEST_COMMAND:
+  required: false
+  example: "pytest tests/unit"
+  description: "Unit test command."
+INTEGRATION_TEST_COMMAND:
+  required: false
+  example: "pytest tests/integration"
+  description: "Integration test command."
+E2E_OR_SMOKE_COMMAND:
+  required: false
+  example: "npm run test:e2e"
+  description: "E2E or smoke test command."
+PROD_PARITY_COMMAND:
+  required: false
+  example: "docker compose run --rm app pytest tests/smoke"
+  description: "Production-parity verification command."
+LINT_COMMAND:
+  required: false
+  example: "npm run lint"
+  description: "Lint command."
+TYPECHECK_COMMAND:
+  required: false
+  example: "npm run typecheck"
+  description: "Typecheck command."
+CI_COMMAND:
+  required: false
+  example: "npm run ci"
+  description: "CI-equivalent local command."
+PACKAGE_OR_DEPLOY_COMMAND:
+  required: false
+  example: "docker build ."
+  description: "Packaging or deploy verification command."
+YYYY-MM-DD:
+  required: false
+  example: "2026-03-21"
+  description: "Date token used by decision-log entry headings."
+TITLE:
+  required: false
+  example: "Adopt production parity smoke gate"
+  description: "Decision-log entry title token."

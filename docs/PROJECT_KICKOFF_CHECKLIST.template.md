@@ -11,10 +11,10 @@
 
 ### B. AI Context
 - [ ] `CLAUDE.md` を配置した
-- [ ] `PROJECT_BRIEF.md` を作成した
-- [ ] `SKILL_ROUTING.md` を作成した
-- [ ] `QUALITY_GATES.md` を作成した
-- [ ] `TEST_STRATEGY.md` を作成した
+- [ ] `docs/PROJECT_BRIEF.md` を作成した
+- [ ] `docs/SKILL_ROUTING.md` を作成した
+- [ ] `docs/QUALITY_GATES.md` を作成した
+- [ ] `docs/TEST_STRATEGY.md` を作成した
 - [ ] `.claude/rules/` を必要に応じて配置した
 - [ ] `/project-kickoff` コマンドを配置した
 
@@ -23,6 +23,8 @@
 - [ ] main source / test / db ディレクトリを明記した
 - [ ] リリース判定者を決めた
 - [ ] 例外運用のルールを決めた
+- [ ] `placeholders.yml` に必要な placeholder が登録されている
+- [ ] `python3 scripts/validate_templates.py` が通る
 
 ### D. Risk Controls
 - [ ] 隠れ契約を記録する場所を決めた

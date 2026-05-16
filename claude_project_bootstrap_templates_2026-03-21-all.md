@@ -1173,7 +1173,7 @@ name: project-kickoff
 description: Bootstrap project context, quality gates, skill routing, and test strategy for a new or existing repository. Use only when the user explicitly asks to run project kickoff or bootstrap project context.
 argument-hint: "[optional-focus]"
 disable-model-invocation: true
-allowed-tools: Read Grep Glob LS AskUserQuestion TaskCreate TaskUpdate TaskList TaskGet Edit(CLAUDE.md) Edit(docs/**) Edit(.claude/rules/**)
+allowed-tools: Read Write Edit Grep Glob LS AskUserQuestion TaskCreate TaskUpdate TaskList TaskGet
 ---
 
 # Project Kickoff
@@ -1184,7 +1184,26 @@ $ARGUMENTS
 
 ## Tool Permission Note
 
-This skill pre-approves edits only for `CLAUDE.md`, `docs/**`, and `.claude/rules/**` because project kickoff refreshes bootstrap documents. Creating files or editing other paths should still require normal user approval.
+This skill needs `Write` and `Edit` because project kickoff **creates** new bootstrap
+documents (`CLAUDE.md`, `docs/**`, `.claude/rules/**`) in a new repository and refreshes
+them in an existing one. `Edit` alone cannot create missing files.
+
+Safety here comes from `disable-model-invocation: true`: the skill never runs
+automatically and only executes when the user explicitly invokes it.
+
+Skill `allowed-tools` accepts **bare tool names only** — path-scoped entries such as
+`Edit(docs/**)` are not parsed here and would silently disable the tool. To restrict
+where this skill may write, add path rules in the consuming project's
+`.claude/settings.json` `permissions` instead, for example:
+
+```json
+{
+  "permissions": {
+    "allow": ["Write(/docs/**)", "Edit(/docs/**)", "Edit(/CLAUDE.md)", "Edit(/.claude/rules/**)"],
+    "deny": ["Write(//**)", "Edit(//**)"]
+  }
+}
+```
 
 ## Goals
 
